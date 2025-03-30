@@ -1,0 +1,84 @@
+# Byte-compiled Python files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django-specific files
+db.sqlite3
+db.sqlite3-journal
+
+# Static and media files (if they are generated locally)
+/static/
+/media/
+
+# IDE/editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Testing and coverage
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+htmlcov/
+
+# Virtual environment
+pip-wheel-metadata/
+*.whl
+
+# Local configuration files
+local_settings.py
+settings/local.py
+
+# Migration files (optional, depending on your workflow)
+# migrations/
+# !migrations/__init__.py
+
+# Cache files
+*.cache
+
+# Temporary files
+*.tmp
+*~
+
+# Sphinx documentation
+docs/_build/
+
+# PyCharm specific
+.idea/
+*.iml
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Docker
+docker-compose.override.yml
+.dockerenv
+
+# Other
+*.bak
+*.swp
+.env
