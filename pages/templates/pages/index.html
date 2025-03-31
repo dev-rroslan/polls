@@ -13,10 +13,19 @@
                 <p class="py-6 text-base-content">
                     This is a homepage built with Django, Tailwind CSS, and DaisyUI.
                 </p>
-                <button class="btn btn-primary">Get Started</button>
+                <div x-data="{ open: false }">
+                   <button @click="open = !open">Toggle</button>
+                <div x-show="open">This content AlpineJS toggles works!</div>
+               
+            </div>
             </div>
         </div>
     </div>
+     <!-- Example Button -->
+            <button hx-get="/example-endpoint" hx-target="#result">Load Data</button>
+
+                <!-- Target Element -->
+                <div id="result">Data will appear here.</div>
 
     <!-- Features Section -->
     <section class="container mx-auto px-4 py-8">
