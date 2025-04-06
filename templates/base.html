@@ -1,0 +1,67 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Django App{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    {% tailwind_css %}
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-base-100 text-base-content">
+    <!-- Navbar -->
+    <nav class="bg-primary text-primary-content p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{% url 'home' %}" class="text-xl font-bold">My Django App</a>
+            <ul class="flex space-x-4">
+                <li><a href="{% url 'home' %}" class="hover:underline">Home</a></li>
+                <li><a href="{% url 'about' %}" class="hover:underline">About</a></li>
+                <li><a href="{% url 'contact' %}" class="hover:underline">Contact</a></li>
+            </ul>
+            <button class="btn btn-secondary flex items-center" onclick="toggleTheme()">
+                <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-10h-1M4.34 12h-1m14.78-7.78l-.707.707M5.93 5.93l-.707-.707M18.364 18.364l-.707-.707M5.93 18.364l-.707.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-6">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-neutral text-neutral-content p-4 mt-6 text-center">
+        <p>&copy; 2025 My Django App. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlElement.setAttribute('data-theme', newTheme);
+            
+            const icon = document.getElementById('theme-icon');
+            if (newTheme === 'dark') {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-10h-1M4.34 12h-1m14.78-7.78l-.707.707M5.93 5.93l-.707-.707M18.364 18.364l-.707-.707M5.93 18.364l-.707.707M9 12a3 3 0 106 0 3 3 0 00-6 0z" />';
+            } else {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-10h-1M4.34 12h-1m14.78-7.78l-.707.707M5.93 5.93l-.707-.707M18.364 18.364l-.707-.707M5.93 18.364l-.707.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />';
+            }
+        }
+    </script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,14 +1,14 @@
-from . import base
+from . import settings
 from pathlib import Path
-from dotenv import read_dotenv # type: ignore
+#from dotenv import read_dotenv # type: ignore
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-os.getenv('RESEND')
-DEBUG = False
-ALLOWED_HOSTS = ['polls.applikasi.tech', '165.154.203.185', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://polls.applikasi.tech']
+RESEND=os.getenv('RESEND')
+DEBUG=os.getenv('DEBUG')
+ALLOWED_HOSTS = ['*']
+#CSRF_TRUSTED_ORIGINS = ['https://polls.applikasi.tech']
 
 
 # Database
@@ -17,10 +17,12 @@ CSRF_TRUSTED_ORIGINS = ['https://polls.applikasi.tech']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'NAME': os.getenv('DB_DEV_NAME'),
+        'USER': os.getenv('DB_DEV_USER'),
+        'PASSWORD': os.getenv('DB_DEV_PASSWORD'),
+        'HOST': os.getenv('DB_DEV_HOST'),
+        'PORT': os.getenv('DB_DEV_PORT'),
     }
 }
+
+SECRET_KEY=os.getenv('SECRET_KEY')
