@@ -3,38 +3,34 @@
 {% block title %}Contact Us - My Django App{% endblock %}
 
 {% block content %}
-<div class="max-w-lg mx-auto bg-base-200 p-6 rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
-    <form method="POST" action="{% url 'contact' %}" class="space-y-4">
-        {% csrf_token %}
-        
-        <div>
-            <label class="block text-sm font-medium" for="name">Name</label>
-            <input type="text" id="name" name="name" class="input input-bordered w-full" required>
-        </div>
-        
-        <div>
-            <label class="block text-sm font-medium" for="contact">Phone or Email</label>
-            <input type="text" id="contact" name="contact" class="input input-bordered w-full" required>
-        </div>
-        
-        <div>
-            <label class="block text-sm font-medium" for="message">Message</label>
-            <textarea id="message" name="message" class="textarea textarea-bordered w-full" rows="4" required></textarea>
-        </div>
-        
-        <button type="submit" class="btn btn-primary w-full">Send Message</button>
-    </form>
-</div>
+<h2 class="text-2xl font-bold text-center mb-6">Contact Us</h2>
+
+<form method="POST" class="max-w-lg mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+    {% csrf_token %}
+    
+    <label for="id_name" class="block text-gray-700 font-medium mb-2">Name:</label>
+    <input type="text" name="name" id="id_name" value="{{ request.POST.name }}" required
+        class="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 text-gray-700">
+
+    <label for="id_contact" class="block text-gray-700 font-medium mb-2">Phone or Email:</label>
+    <input type="text" name="contact" id="id_contact" value="{{ request.POST.contact }}" required
+        class="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 text-gray-700">
+
+    <label for="id_message" class="block text-gray-700 font-medium mb-2">Message:</label>
+    <textarea name="message" id="id_message" required
+        class="w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 text-gray-700">{{ request.POST.message }}</textarea>
+
+    <button type="submit" class="w-full p-3 bg-green-500 text-white font-semibold rounded-md hover:bg-green-400 focus:outline-none">Send Message</button>
+</form>
 
 {% if messages %}
-<div class="mb-4">
-    {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
-            {{ message }}
-        </div>
-    {% endfor %}
-</div>
+    <div class="mt-6">
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}bg-green-100 text-green-700 border-green-400{% else %}bg-red-100 text-red-700 border-red-400{% endif %} p-4 mb-4 border rounded-md">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
 {% endif %}
 
 {% endblock %}

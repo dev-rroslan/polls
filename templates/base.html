@@ -3,10 +3,13 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Django App{% endblock %}</title>
-
+    <title>{% block title %}Undi{% endblock %}</title>
+    <!-- Link to Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static '/images/favicon.ico' %}">
+    
     <!-- Tailwind CSS -->
     {% tailwind_css %}
     
@@ -20,17 +23,19 @@
 </head>
 <body class="bg-base-100 text-base-content">
     <!-- Navbar -->
-    <nav class="bg-primary text-primary-content p-4">
+    <nav class="bg-neutral text-neutral-content p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="{% url 'home' %}" class="text-xl font-bold">My Django App</a>
+            <a href="{% url 'home' %}" class="text-xl font-bold">Undi</a>
             <ul class="flex space-x-4">
                 <li><a href="{% url 'home' %}" class="hover:underline">Home</a></li>
                 <li><a href="{% url 'about' %}" class="hover:underline">About</a></li>
                 <li><a href="{% url 'contact' %}" class="hover:underline">Contact</a></li>
             </ul>
-            <button class="btn btn-secondary flex items-center" onclick="toggleTheme()">
-                <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-10h-1M4.34 12h-1m14.78-7.78l-.707.707M5.93 5.93l-.707-.707M18.364 18.364l-.707-.707M5.93 18.364l-.707.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <!-- Updated Button -->
+            <button id="theme-toggle" class="p-3 bg-base-200 hover:bg-base-300 rounded-full shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-base-300" onclick="toggleTheme()">
+                <!-- New Borderless Icon -->
+                <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-5 text-neutral-content">
+                    <path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z" />
                 </svg>
             </button>
         </div>
@@ -43,23 +48,51 @@
 
     <!-- Footer -->
     <footer class="bg-neutral text-neutral-content p-4 mt-6 text-center">
-        <p>&copy; 2025 My Django App. All rights reserved.</p>
+        <p>&copy; 2025 Undi App. All rights reserved.</p>
     </footer>
 
     <script>
+        // Function to toggle the theme
         function toggleTheme() {
             const htmlElement = document.documentElement;
             const currentTheme = htmlElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             htmlElement.setAttribute('data-theme', newTheme);
             
+            // Save the selected theme to localStorage
+            localStorage.setItem('theme', newTheme);
+
+            // Update the icon based on the theme
             const icon = document.getElementById('theme-icon');
             if (newTheme === 'dark') {
-                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-10h-1M4.34 12h-1m14.78-7.78l-.707.707M5.93 5.93l-.707-.707M18.364 18.364l-.707-.707M5.93 18.364l-.707.707M9 12a3 3 0 106 0 3 3 0 00-6 0z" />';
+                icon.innerHTML = '<path d="M8 3a5 5 0 0 0-5 5v2a5 5 0 0 0 5 5h2a5 5 0 0 0 5-5V8a5 5 0 0 0-5-5H8Zm0 1a4 4 0 0 1 4 4v2a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h2Z" />';
             } else {
-                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-10h-1M4.34 12h-1m14.78-7.78l-.707.707M5.93 5.93l-.707-.707M18.364 18.364l-.707-.707M5.93 18.364l-.707.707M15 12a3 3 0 11-6 0 3 3 0 016 0z" />';
+                icon.innerHTML = '<path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z" />';
             }
         }
+
+        // Function to apply the saved theme from localStorage
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const htmlElement = document.documentElement;
+
+            if (savedTheme) {
+                htmlElement.setAttribute('data-theme', savedTheme);
+
+                // Update the icon based on the saved theme
+                const icon = document.getElementById('theme-icon');
+                if (savedTheme === 'dark') {
+                    icon.innerHTML = '<path d="M8 3a5 5 0 0 0-5 5v2a5 5 0 0 0 5 5h2a5 5 0 0 0 5-5V8a5 5 0 0 0-5-5H8Zm0 1a4 4 0 0 1 4 4v2a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h2Z" />';
+                } else {
+                    icon.innerHTML = '<path d="M14.438 10.148c.19-.425-.321-.787-.748-.601A5.5 5.5 0 0 1 6.453 2.31c.186-.427-.176-.938-.6-.748a6.501 6.501 0 1 0 8.585 8.586Z" />';
+                }
+            }
+        }
+
+        // Apply the saved theme when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            applySavedTheme();
+        });
     </script>
     
     {% block extra_scripts %}{% endblock %}

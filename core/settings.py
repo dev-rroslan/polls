@@ -28,7 +28,7 @@ SECRET_KEY=os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'undi.applikasi.tech', 'localhost']
+ALLOWED_HOSTS = ['165.154.203.185', 'undi.applikasi.tech']
 
 
 # Application definition
@@ -42,15 +42,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tailwind',
     'theme',
-    'django_browser_reload',
+    #'django_browser_reload',
     'pages',
 ]
 
 TAILWIND_APP_NAME = 'theme'
 
-INTERNAL_IPS = [
+""" INTERNAL_IPS = [
     "127.0.0.1",
-]
+] """
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    #"django_browser_reload.middleware.BrowserReloadMiddleware",
     
 ]
 
@@ -133,11 +133,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-STATICFILES_DIR = []
+#STATICFILES_DIR = ["theme/static"]
 #STATICFILES_DIRS = [
 #    BASE_DIR / 'theme/static']  # Additional static files directory (e.g., Tailwind CSS)]]
 
@@ -155,7 +155,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = "resend"
 EMAIL_HOST_PASSWORD = os.getenv("RESEND")
-DEFAULT_FROM_EMAIL = "roslan@applikasi.tech"  # Your verified sender domain
+DEFAULT_FROM_EMAIL = "noreply@applikasi.tech"  # Your verified sender domain
 
 
 
