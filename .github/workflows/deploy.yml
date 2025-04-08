@@ -1,0 +1,38 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main  # Trigger only on pushes to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up SSH access to the VPS
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          cat <<EOF > ~/.ssh/github_action
+          run echo ${{ secrets.POLLS_DJANGO_PRIVATE_KEY }}
+          EOF
+          chmod 600 ~/.ssh/github_action
+          ssh-keyscan applikasi.tech >> ~/.ssh/known_hosts
+
+      # Step 3: Deploy to the VPS
+      - name: Deploy to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_action ${{ secrets.VPS_USER }}@applikasi.tech << 'EOF'
+          cd /home/ubuntu/polls
+          git pull origin main
+          source /home/ubuntu/polls/venv/bin/activate
+          python manage.py migrate --noinput
+          python manage.py collectstatic --noinput
+          sudo systemctl restart gunicorn
+          sudo systemctl reload nginx
+          EOF
