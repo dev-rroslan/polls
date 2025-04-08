@@ -3,36 +3,39 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main  # Trigger only on pushes to the main branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
+      # Step 1: Checkout your repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up SSH access to the VPS
-      - name: Set up SSH key
+      # Step 2: Set up SSH and known hosts
+      - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          cat <<EOF > ~/.ssh/github_action
-          run echo ${{ secrets.POLLS_DJANGO_PRIVATE_KEY }}
-          EOF
+          echo "$SSH_KEY" > ~/.ssh/github_action
           chmod 600 ~/.ssh/github_action
-          ssh-keyscan applikasi.tech >> ~/.ssh/known_hosts
+          ssh-keyscan $VPS_IP >> ~/.ssh/known_hosts
+        env:
+          SSH_KEY: ${{ secrets.POLLS_DJANGO_PRIVATE_KEY }}
+          VPS_IP: ${{ secrets.VPS_IP }}
 
-      # Step 3: Deploy to the VPS
+      # Step 3: Deploy and restart services
       - name: Deploy to VPS
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_action ${{ secrets.VPS_USER }}@applikasi.tech << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_action $VPS_USER@$VPS_IP << 'EOF'
           cd /home/ubuntu/polls
           git pull origin main
-          source /home/ubuntu/polls/venv/bin/activate
+          source venv/bin/activate
           python manage.py migrate --noinput
           python manage.py collectstatic --noinput
           sudo systemctl restart gunicorn
-          sudo systemctl reload nginx
           EOF
+        env:
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_IP: ${{ secrets.VPS_IP }}
