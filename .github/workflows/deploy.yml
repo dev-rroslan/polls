@@ -10,22 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout your repository
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up SSH and known hosts
+      # Step 2: Set up SSH key
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/github_action
+          echo "$SSH_KEY_B64" | base64 -d > ~/.ssh/github_action
           chmod 600 ~/.ssh/github_action
           ssh-keyscan $VPS_IP >> ~/.ssh/known_hosts
         env:
-          SSH_KEY: ${{ secrets.POLLS_DJANGO_PRIVATE_KEY }}
+          SSH_KEY_B64: ${{ secrets.POLLS_DJANGO_PRIVATE_KEY_B64 }}
           VPS_IP: ${{ secrets.VPS_IP }}
 
-      # Step 3: Deploy and restart services
+      # Step 3: Deploy
       - name: Deploy to VPS
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/github_action $VPS_USER@$VPS_IP << 'EOF'
