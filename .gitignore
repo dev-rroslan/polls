@@ -84,3 +84,7 @@ docker-compose.override.yml
 .env
 django_email.log
 .qodo
+.envrc
+venv/
+venv
+.envrc
