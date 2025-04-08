@@ -16,7 +16,7 @@ jobs:
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "$DEPLOYMENT" | base64 -d > ~/.ssh/github_action
+          echo "$DEPLOYMENT" > ~/.ssh/github_action
           chmod 600 ~/.ssh/github_action
           ssh-keyscan -H $VPS_IP >> ~/.ssh/known_hosts
         env:
